@@ -59,22 +59,6 @@ services:
     tty: true
     stdin_open: true
 
-
-  # dashboard:
-  #   build:
-  #     context: ./dashboard
-  #     dockerfile: dockerfile
-  #   container_name: dashboard
-  #   depends_on:
-  #     - hbase
-  #     - python_script
-  #   networks:
-  #     my_network:
-  #       ipv4_address: 172.20.0.4
-  #   ports:
-  #     - "8500:8500"
-  #   command: streamlit run dashboard.py --server.port 8500
-
   hue:
     image: gethue/hue
     container_name: hue
