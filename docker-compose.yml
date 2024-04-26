@@ -33,14 +33,14 @@ services:
   #   ports:
   #     - "8182:8182"
 
-  hive:
+  hive4:
     image: apache/hive:4.0.0
-    container_name: metastore-standalone
+    container_name: hive4
     environment:
-      - SERVICE_NAME=metastore
+      - SERVICE_NAME=hiveserver2
     ports:
-      - "9083:9083"
-      - "10000:10000"  # Expose le port 10000 pour Hive
+      - "10000:10000"
+      - "10002:10002"
     networks:
       my_network:
         ipv4_address: 172.20.0.4
@@ -70,12 +70,10 @@ services:
       - "8888:8888" # Port web de Hue
     environment:
       - HUE_DATABASE_ENGINE=happybase
-      - HUE_HBASE_HOST=hbase
+      - HUE_HBASE_HOST=hive
       - HUE_HBASE_PORT=9090
       - HUE_YARN_HOST=yarn  # Utilise le nom du service YARN
       - HUE_YARN_PORT=8088
-    depends_on:
-      - hbase
     networks:
       my_network:
         ipv4_address: 172.20.0.5
