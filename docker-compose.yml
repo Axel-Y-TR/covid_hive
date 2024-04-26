@@ -18,20 +18,32 @@ services:
     tty: true
     stdin_open: true
 
-  # python_script:
-  #   build:
-  #     context: ./api
-  #     dockerfile: dockerfile
-  #   container_name: python_script
-  #   depends_on:
-  #     - hbase
-  #   networks:
-  #     my_network:
-  #       ipv4_address: 172.20.0.3
-  #   environment:
-  #     - MONGO_URI=mongodb://mongodb:27017/DB
-  #   ports:
-  #     - "8182:8182"
+
+  etl:
+    build:
+      context: ./data
+      dockerfile: dockerfile
+    container_name: etl
+    depends_on:
+      - hbase
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.3
+    ports:
+      - "8182:8182"
+
+  hive:
+    build:
+      context: ./
+      dockerfile: dockerfile
+    container_name: etl
+    depends_on:
+      - etl
+    networks:
+      my_network:
+        ipv4_address: 172.20.0.6
+    ports:
+      - "8183:8183"
 
   hive4:
     image: apache/hive:4.0.0
